@@ -38,7 +38,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                style="@style/CheckBox"
                 android:button="@drawable/start_checkbox"
 
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -63,40 +62,30 @@
 
     <EditText
         android:id="@+id/titleEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:backgroundTint="@android:color/transparent"
+        style="@style/EditTextAddTaskFragment"
         android:hint="Название задачи"
-        android:padding="16dp"
         android:textSize="20sp" />
 
     <EditText
         android:id="@+id/descriptionEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        style="@style/EditTextAddTaskFragment"
         android:backgroundTint="@android:color/transparent"
         android:hint="Добавить дополнительную информацию"
-        android:padding="16dp"
         android:textSize="18sp" />
 
     <EditText
         android:id="@+id/timeEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@android:color/transparent"
+        style="@style/EditTextAddTaskFragment"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
         android:hint="Добавить дату"
-        android:padding="16dp"
         android:textSize="18sp" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addButton"
 
-        android:background="@drawable/ic_add"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_add" />
 </LinearLayout>

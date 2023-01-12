@@ -7,4 +7,23 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginBottom">6dp</item>
     </style>
+
+    <style name="datePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/cardview_dark_background</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="textLocale"></item>
+        <item name="colorAccent">@color/cardview_dark_background</item>
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+
+    <style name="EditTextAddTaskFragment">
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:padding">16dp</item>
+    </style>
 </resources>

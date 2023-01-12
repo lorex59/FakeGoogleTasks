@@ -2,6 +2,11 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="10dp"
+    app:cardCornerRadius="10dp"
+    android:elevation="16dp"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +28,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/checkBoxFavorite"
             app:layout_constraintStart_toEndOf="@+id/checkBoxDelete"
             app:layout_constraintTop_toTopOf="parent">
@@ -47,6 +53,7 @@
                 app:cardCornerRadius="10dp">
 
                 <TextView
+                    android:id="@+id/dateTextView"
                     style="@style/TextItemStyle"
                     android:padding="8dp"
                     android:text="день недели, число месяц"

@@ -2,10 +2,13 @@ package com.example.fakegoogletasks.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fakegoogletasks.databinding.FragmentAddTaskBinding
 import com.example.fakegoogletasks.databinding.ItemLayoutBinding
 import com.example.fakegoogletasks.entity.Task
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
@@ -22,10 +25,20 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val currentItem = taskList[position]
+        val myFormat = "dd-MM-yyyy"
+        val sdf = SimpleDateFormat(myFormat, Locale.UK)
+        val temp = sdf.format(currentItem.date.time)
         with(holder.binding) {
             titleTextView.text = currentItem.title
-            descriptionTextView.text = currentItem.description
+            if (currentItem.description != "" )
+                descriptionTextView.text = currentItem.description
+            else
+                descriptionTextView.isVisible = !descriptionTextView.isVisible
             checkBoxFavorite.isChecked = currentItem.isFavorite
+            if (currentItem.date != Date(0))
+                dateTextView.text = temp
+            else
+                dateTextView.isVisible = !dateTextView.isVisible
         }
     }
 
