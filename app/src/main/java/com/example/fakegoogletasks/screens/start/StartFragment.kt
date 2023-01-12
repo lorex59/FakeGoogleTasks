@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.fakegoogletasks.R
 import com.example.fakegoogletasks.databinding.FragmentStartBinding
+import com.example.fakegoogletasks.utils.showToast
+import kotlinx.android.synthetic.main.fragment_start.view.*
 
 
 class StartFragment : Fragment() {
@@ -21,6 +23,20 @@ class StartFragment : Fragment() {
         binding = FragmentStartBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.floatingButton.setOnClickListener {
+            showToast("floating")
+        }
+        binding.settingButton.setOnClickListener {
+            showToast("setting")
+        }
+        binding.menuButton.setOnClickListener {
+            showToast("menu")
+        }
     }
 
 
