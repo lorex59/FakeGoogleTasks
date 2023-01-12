@@ -3,5 +3,6 @@
     <item android:drawable="@drawable/ic_cored_start"
         android:state_checked="false"/>
     <item android:drawable="@drawable/ic_star"
+
         android:state_checked="true"/>
 </selector>

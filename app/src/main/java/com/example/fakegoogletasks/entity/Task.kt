@@ -22,5 +22,5 @@ data class Task(
     val date: Date,
     val isFinish: Boolean,
     val isFavorite: Boolean,
-    val parent_id: Int
+    val parent_id: Int?
 )
