@@ -1,14 +1,13 @@
 package com.example.fakegoogletasks.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import com.example.fakegoogletasks.database.dao.TaskDao
 import com.example.fakegoogletasks.entity.Task
 
 
 @Database(entities = [Task::class], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class TaskDatabase : RoomDatabase() {
 
 
