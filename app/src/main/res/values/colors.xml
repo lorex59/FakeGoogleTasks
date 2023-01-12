@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorPrimary">#fefefe</color>
     <color name="textColor">#333333</color>
+    <color name="itemColor">#636466</color>
 </resources>

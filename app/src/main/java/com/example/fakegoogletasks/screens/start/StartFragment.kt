@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.fakegoogletasks.R
 import com.example.fakegoogletasks.databinding.FragmentStartBinding
 import com.example.fakegoogletasks.utils.showToast
@@ -29,7 +30,7 @@ class StartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.floatingButton.setOnClickListener {
-            showToast("floating")
+            findNavController().navigate(R.id.action_startFragment_to_addTaskFragment)
         }
         binding.settingButton.setOnClickListener {
             showToast("setting")

@@ -9,5 +9,18 @@
         android:id="@+id/startFragment"
         android:name="com.example.fakegoogletasks.screens.start.StartFragment"
         android:label="fragment_start"
-        tools:layout="@layout/fragment_start" />
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="com.example.fakegoogletasks.screens.add.AddTaskFragment"
+        android:label="fragment_add_task"
+        tools:layout="@layout/fragment_add_task" >
+        <action
+            android:id="@+id/action_addTaskFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
 </navigation>
