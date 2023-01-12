@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android/FakeGoogleTasks/app/src/main/res/drawable/ic_add.xml" value="0.2435" />
+        <entry key="..\:/android/FakeGoogleTasks/app/src/main/res/drawable/ic_menu.xml" value="0.2435" />
+        <entry key="..\:/android/FakeGoogleTasks/app/src/main/res/drawable/ic_settings.xml" value="0.2435" />
         <entry key="..\:/android/FakeGoogleTasks/app/src/main/res/layout/activity_main.xml" value="0.17864583333333334" />
-        <entry key="..\:/android/FakeGoogleTasks/app/src/main/res/layout/fragment_start.xml" value="0.19270833333333334" />
+        <entry key="..\:/android/FakeGoogleTasks/app/src/main/res/layout/fragment_start.xml" value="0.33" />
       </map>
     </option>
   </component>
