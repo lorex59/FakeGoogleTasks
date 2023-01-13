@@ -12,8 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fakegoogletasks.R
+import com.example.fakegoogletasks.adapter.TaskActionListener
 import com.example.fakegoogletasks.adapter.TaskAdapter
 import com.example.fakegoogletasks.databinding.FragmentStartBinding
+import com.example.fakegoogletasks.entity.Task
 import com.example.fakegoogletasks.utils.showToast
 import com.example.fakegoogletasks.viewmodels.TaskViewModel
 import kotlinx.android.synthetic.main.fragment_start.view.*
@@ -31,7 +33,12 @@ class StartFragment : Fragment() {
 
         binding = FragmentStartBinding.inflate(inflater, container, false)
 
-        val adapter = TaskAdapter()
+        val adapter = TaskAdapter(object : TaskActionListener {
+            override fun onTaskDetail(task: Task) {
+                showToast(task.toString())
+            }
+
+        })
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
