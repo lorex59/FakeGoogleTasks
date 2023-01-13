@@ -80,7 +80,12 @@ class TaskAdapter(private val taskActionListener: TaskActionListener, private va
     }
 
     fun setData(tasks: List<Task>) {
-        this.taskList = tasks
+        when(type) {
+            TYPE_FAVORITE -> this.taskList = tasks.filter { it.isFavorite }
+            TYPE_FINISHED -> this.taskList = tasks.filter { it.isFinish }
+            TYPE_BASE -> this.taskList = tasks.filter { !it.isFinish }
+        }
+
         notifyDataSetChanged()
     }
 

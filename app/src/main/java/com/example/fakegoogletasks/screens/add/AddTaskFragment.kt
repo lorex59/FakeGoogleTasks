@@ -36,7 +36,7 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         super.onViewCreated(view, savedInstanceState)
 
         binding.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_addTaskFragment_to_startFragment)
+            findNavController().navigate(R.id.action_addTaskFragment_to_mainFragment)
         }
 
         binding.addButton.setOnClickListener {

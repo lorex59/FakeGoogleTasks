@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/startFragment">
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/startFragment"
@@ -12,14 +12,7 @@
         tools:layout="@layout/fragment_start" >
         <action
             android:id="@+id/action_startFragment_to_addTaskFragment"
-            app:destination="@id/addTaskFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
-        <action
-            android:id="@+id/action_startFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+           />
     </fragment>
     <fragment
         android:id="@+id/addTaskFragment"
@@ -27,19 +20,30 @@
         android:label="fragment_add_task"
         tools:layout="@layout/fragment_add_task" >
         <action
-            android:id="@+id/action_addTaskFragment_to_startFragment"
-            app:destination="@id/startFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            android:id="@+id/action_addTaskFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.example.fakegoogletasks.screens.detail.DetailFragment"
         android:label="DetailFragment" >
         <action
-            android:id="@+id/action_detailFragment_to_startFragment"
-            app:destination="@id/startFragment" />
+            android:id="@+id/action_detailFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.fakegoogletasks.screens.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addTaskFragment2"
+            app:destination="@id/addTaskFragment" />
     </fragment>
 </navigation>

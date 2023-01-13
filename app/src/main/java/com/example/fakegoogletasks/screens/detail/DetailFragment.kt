@@ -38,7 +38,7 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_detailFragment_to_startFragment)
+            findNavController().navigate(R.id.action_detailFragment_to_mainFragment)
         }
 
         task = arguments?.getSerializable(KEY_TO_TASK) as Task
@@ -63,7 +63,7 @@ class DetailFragment : Fragment() {
             null
         )
         viewModel.updateTask(newTask)
-        findNavController().navigate(R.id.action_detailFragment_to_startFragment)
+        findNavController().navigate(R.id.action_detailFragment_to_mainFragment)
     }
 
 }
