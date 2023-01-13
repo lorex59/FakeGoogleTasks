@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.util.*
 
 
@@ -23,4 +24,4 @@ data class Task(
     val isFinish: Boolean,
     val isFavorite: Boolean,
     val parent_id: Int?
-)
+): Serializable

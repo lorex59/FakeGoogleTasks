@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.ListFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fakegoogletasks.R
 import com.example.fakegoogletasks.adapter.TaskActionListener
 import com.example.fakegoogletasks.adapter.TaskAdapter
+import com.example.fakegoogletasks.adapter.TaskAdapter.Companion.TYPE_BASE
 import com.example.fakegoogletasks.databinding.FragmentStartBinding
 import com.example.fakegoogletasks.entity.Task
 import com.example.fakegoogletasks.utils.showToast
@@ -35,10 +37,20 @@ class StartFragment : Fragment() {
 
         val adapter = TaskAdapter(object : TaskActionListener {
             override fun onTaskDetail(task: Task) {
-                showToast(task.toString())
+                val bundle = Bundle()
+                bundle.putSerializable(KEY_TO_TASK, task) //todo
+                findNavController().navigate(R.id.action_startFragment_to_detailFragment, bundle)
             }
 
-        })
+            override fun onDeleteButton(task: Task) {
+                viewModel.updateTask(task)
+            }
+
+            override fun onFavoriteButton(task: Task) {
+                viewModel.updateTask(task)
+            }
+
+        }, TYPE_BASE)
         val recyclerView = binding.recyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -68,6 +80,7 @@ class StartFragment : Fragment() {
         }
 
     }
+
     private fun deleteAllUsers() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes") { _, _ ->
@@ -75,12 +88,19 @@ class StartFragment : Fragment() {
             Toast.makeText(
                 requireContext(),
                 "Successfully removed everything",
-                Toast.LENGTH_SHORT).show()
+                Toast.LENGTH_SHORT
+            ).show()
         }
         builder.setNegativeButton("No") { _, _ -> }
         builder.setTitle("Delete everything?")
         builder.setMessage("Are you sure you want to delete everything?")
         builder.create().show()
+    }
+
+    companion object {
+
+        const val KEY_TO_TASK = "KEY_TO_TASK"
+
     }
 
 }

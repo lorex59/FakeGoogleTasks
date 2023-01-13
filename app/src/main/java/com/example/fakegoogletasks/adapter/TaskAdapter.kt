@@ -1,5 +1,6 @@
 package com.example.fakegoogletasks.adapter
 
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -9,6 +10,7 @@ import com.example.fakegoogletasks.databinding.FragmentAddTaskBinding
 import com.example.fakegoogletasks.databinding.ItemLayoutBinding
 import com.example.fakegoogletasks.entity.Task
 import com.example.fakegoogletasks.screens.start.StartFragment
+import com.example.fakegoogletasks.utils.formatterCustom
 import com.example.fakegoogletasks.utils.showToast
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,11 +19,18 @@ interface TaskActionListener {
 
     fun onTaskDetail(task: Task)
 
+    fun onDeleteButton(task: Task)
+
+    fun onFavoriteButton(task: Task)
+
 }
 
-class TaskAdapter(private val taskActionListener: TaskActionListener) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+class TaskAdapter(private val taskActionListener: TaskActionListener, private val type: String) :
+    RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private var taskList = emptyList<Task>()
+    private lateinit var newTask: Task
 
     inner class TaskViewHolder(val binding: ItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -29,28 +38,34 @@ class TaskAdapter(private val taskActionListener: TaskActionListener) : Recycler
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemLayoutBinding.inflate(inflater, parent, false)
-        //binding.root.setOnClickListener(this)
+
 
         return TaskViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         val currentItem = taskList[position]
-        val myFormat = "dd-MM-yyyy"
-        val sdf = SimpleDateFormat(myFormat, Locale.UK)
-        val temp = sdf.format(currentItem.date.time)
-
+        holder.binding.dateTextView.isVisible = true
+        val temp = formatterCustom(currentItem.date.time)
         holder.binding.root.setOnClickListener {
             taskActionListener.onTaskDetail(currentItem)
         }
-
+        holder.binding.checkBoxDelete.setOnClickListener {
+            newTask = currentItem.copy(isFinish = holder.binding.checkBoxDelete.isChecked)
+            taskActionListener.onDeleteButton(newTask)
+        }
+        holder.binding.checkBoxFavorite.setOnClickListener {
+            newTask = currentItem.copy(isFavorite = holder.binding.checkBoxFavorite.isChecked)
+            taskActionListener.onFavoriteButton(newTask)
+        }
         with(holder.binding) {
 
             titleTextView.text = currentItem.title
-            if (currentItem.description != "" )
+            if (currentItem.description != "")
                 descriptionTextView.text = currentItem.description
             else
                 descriptionTextView.isVisible = !descriptionTextView.isVisible
+            checkBoxDelete.isChecked = currentItem.isFinish
             checkBoxFavorite.isChecked = currentItem.isFavorite
             if (currentItem.date != Date(0))
                 dateTextView.text = temp
@@ -58,6 +73,7 @@ class TaskAdapter(private val taskActionListener: TaskActionListener) : Recycler
                 dateTextView.isVisible = !dateTextView.isVisible
         }
     }
+
 
     override fun getItemCount(): Int {
         return taskList.size
@@ -67,4 +83,13 @@ class TaskAdapter(private val taskActionListener: TaskActionListener) : Recycler
         this.taskList = tasks
         notifyDataSetChanged()
     }
+
+    companion object {
+
+        const val TYPE_FAVORITE = "TYPE_FAVORITE"
+        const val TYPE_FINISHED = "TYPE_FINISHED"
+        const val TYPE_BASE = "TYPE_BASE"
+
+    }
+
 }

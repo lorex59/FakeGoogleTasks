@@ -38,6 +38,7 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_addTaskFragment_to_startFragment)
         }
+
         binding.addButton.setOnClickListener {
             insertDataToDatabase()
         }
