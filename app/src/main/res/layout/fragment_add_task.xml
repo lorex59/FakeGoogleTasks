@@ -41,20 +41,9 @@
                 android:button="@drawable/start_checkbox"
 
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/trashButton"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/trashButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:background="@color/colorPrimary"
-                android:padding="5dp"
-                android:src="@drawable/ic_trash"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -84,8 +73,6 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addButton"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_add" />
+        style="@style/ButtonAddDetail"
+        android:text="Добавить" />
 </LinearLayout>

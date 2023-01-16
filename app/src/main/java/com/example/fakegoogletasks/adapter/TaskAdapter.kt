@@ -1,6 +1,8 @@
 package com.example.fakegoogletasks.adapter
 
+import android.annotation.SuppressLint
 import android.opengl.Visibility
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible

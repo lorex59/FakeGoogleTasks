@@ -38,6 +38,24 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initialListener()
+        initialViewPager()
+    }
+
+    //region Initial
+
+    private fun initialViewPager() {
+        binding.viewPager.adapter = ViewPagerAdapter(this)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "Текущие задачи"
+                1 -> tab.text = "Избранное"
+                2 -> tab.text = "Выполненные"
+            }
+        }.attach()
+    }
+
+    private fun initialListener() {
         binding.settingButton.setOnClickListener {
             showToast("setting")
         }
@@ -53,32 +71,28 @@ class MainFragment : Fragment() {
             findNavController().navigate(R.id.action_mainFragment_to_addTaskFragment)
 
         }
-
-        binding.viewPager.adapter = ViewPagerAdapter(this)
-        TabLayoutMediator(tabLayout, viewPager) {tab, position ->
-            when(position) {
-                0 -> tab.text = "Избранное"
-                1 -> tab.text ="Текущие задачи"
-                2 -> tab.text ="Выполненные"
-            }
-        }.attach()
     }
+
+    //endregion
+
+    // region AlertDialog
 
     private fun deleteAllUsers() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Yes") { _, _ ->
+        builder.setPositiveButton("Да") { _, _ ->
             viewModel.deleteAllTasks()
             Toast.makeText(
                 requireContext(),
-                "Successfully removed everything",
+                "Все задачи удалены",
                 Toast.LENGTH_SHORT
             ).show()
         }
-        builder.setNegativeButton("No") { _, _ -> }
-        builder.setTitle("Delete everything?")
-        builder.setMessage("Are you sure you want to delete everything?")
+        builder.setNegativeButton("Нет") { _, _ -> }
+        builder.setTitle("Удалить все?")
+        builder.setMessage("Вы уверены, что хотите все удалить?")
         builder.create().show()
     }
 
+    //endregion
 
 }

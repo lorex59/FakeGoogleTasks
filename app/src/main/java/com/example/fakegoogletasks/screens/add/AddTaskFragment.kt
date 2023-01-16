@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.fakegoogletasks.R
 import com.example.fakegoogletasks.databinding.FragmentAddTaskBinding
 import com.example.fakegoogletasks.entity.Task
+import com.example.fakegoogletasks.utils.showToast
 import com.example.fakegoogletasks.viewmodels.TaskViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,17 +36,32 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initialListener()
+    }
+
+    //region InitialListener
+
+    private fun initialListener() {
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_addTaskFragment_to_mainFragment)
         }
 
         binding.addButton.setOnClickListener {
-            insertDataToDatabase()
+            if(binding.titleEditText.text.isEmpty()) {
+                showToast("Название задачи должно быть заполнено обязательно.")
+            } else {
+                insertDataToDatabase()
+            }
         }
         binding.timeEditText.setOnClickListener {
             showDatePicker()
         }
+
     }
+
+    //endregion
+
+    //region DataBase
 
     private fun insertDataToDatabase() {
         val title = binding.titleEditText.text.toString()
@@ -65,7 +81,12 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             null
         )
         taskViewModel.addTask(newTask)
+        findNavController().navigate(R.id.action_addTaskFragment_to_mainFragment)
     }
+
+    //endregion
+
+    //region DatePicker
 
     private fun showDatePicker() {
         DatePickerDialog(
@@ -90,5 +111,7 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.timeEditText.setText(temp)
 
     }
+
+    //endregion
 
 }
