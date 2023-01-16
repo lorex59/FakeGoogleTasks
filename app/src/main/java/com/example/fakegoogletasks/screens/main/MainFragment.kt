@@ -63,7 +63,7 @@ class MainFragment : Fragment() {
             showToast("menu")
         }
         binding.trashAllButton.setOnClickListener {
-            deleteAllUsers()
+            deleteAllTasks()
         }
 
         binding.floatingButton.setOnClickListener {
@@ -77,7 +77,7 @@ class MainFragment : Fragment() {
 
     // region AlertDialog
 
-    private fun deleteAllUsers() {
+    private fun deleteAllTasks() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Да") { _, _ ->
             viewModel.deleteAllTasks()

@@ -20,7 +20,10 @@ interface TaskDao {
     @Query("DELETE FROM task_table")
     suspend fun deleteAllTask()
 
-    @Query("SELECT * FROM task_table ORDER BY id ASC")
+    @Query("SELECT * FROM task_table WHERE parent_id IS NULL ORDER BY id ASC")
     fun readAllTask(): LiveData<List<Task>>
+
+    @Query("SELECT MAX(id) FROM task_table")
+    fun maxId(): LiveData<Int>
 
 }

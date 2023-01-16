@@ -75,4 +75,14 @@
         android:id="@+id/addButton"
         style="@style/ButtonAddDetail"
         android:text="Добавить" />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addButtonSubTask"
+        style="@style/ButtonAddDetail"
+        android:text="Добавить подзадачу" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

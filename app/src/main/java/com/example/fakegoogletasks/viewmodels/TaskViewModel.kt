@@ -47,5 +47,8 @@ class TaskViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    fun maxID(): LiveData<Int> {
+        return repository.maxId()
+    }
 
 }

@@ -61,8 +61,8 @@ class TaskAdapter(private val taskActionListener: TaskActionListener, private va
             taskActionListener.onFavoriteButton(newTask)
         }
         with(holder.binding) {
-
-            titleTextView.text = currentItem.title
+            //TODO
+            titleTextView.text = currentItem.id.toString()
             if (currentItem.description != "")
                 descriptionTextView.text = currentItem.description
             else

@@ -1,17 +1,16 @@
 package com.example.fakegoogletasks.screens.detail
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.fakegoogletasks.R
 import com.example.fakegoogletasks.databinding.FragmentDetailBinding
 import com.example.fakegoogletasks.entity.Task
@@ -74,9 +73,29 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             showDatePicker()
         }
         binding.trashButton.setOnClickListener {
+            deleteTask(task)
+        }
+    }
+
+    //endregion
+
+    //region AlertDialog
+
+    private fun deleteTask(task: Task) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Да") { _, _ ->
             viewModel.deleteTask(task)
             findNavController().navigate(R.id.action_detailFragment_to_mainFragment)
+            Toast.makeText(
+                requireContext(),
+                "Задача удалена",
+                Toast.LENGTH_SHORT
+            ).show()
         }
+        builder.setNegativeButton("Нет") { _, _ -> }
+        builder.setTitle("Удалить задачу?")
+        builder.setMessage("Вы уверены, что хотите удалить задачу?")
+        builder.create().show()
     }
 
     //endregion
