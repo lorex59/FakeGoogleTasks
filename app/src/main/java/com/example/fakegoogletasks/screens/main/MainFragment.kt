@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
 
-    private lateinit var viewModel: TaskViewModel
+    lateinit var viewModel: TaskViewModel
     lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
@@ -67,7 +67,6 @@ class MainFragment : Fragment() {
         }
 
         binding.floatingButton.setOnClickListener {
-            Log.d("Tag", "Test")
             findNavController().navigate(R.id.action_mainFragment_to_addTaskFragment)
 
         }

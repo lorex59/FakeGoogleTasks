@@ -23,8 +23,13 @@ class TaskRepository(private val taskDao: TaskDao) {
     suspend fun deleteAllTasks() {
         taskDao.deleteAllTask()
     }
-    fun maxId(): LiveData<Int> {
-        return taskDao.maxId()
+
+    suspend fun findOne(title: String, description: String): Int {
+        return taskDao.findOne(title, description)
+    }
+
+    suspend fun findChildrenById(id: Int): List<Task> {
+        return taskDao.findChildrenById(id)
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.fakegoogletasks.screens.add
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,15 @@ import com.example.fakegoogletasks.databinding.FragmentAddTaskBinding
 import com.example.fakegoogletasks.entity.Task
 import com.example.fakegoogletasks.utils.showToast
 import com.example.fakegoogletasks.viewmodels.TaskViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.Executors
+import kotlin.math.max
+import kotlin.properties.Delegates
 
 
 class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
@@ -27,8 +35,7 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var taskViewModel: TaskViewModel
     private lateinit var binding: FragmentAddTaskBinding
     private lateinit var adapter: SubTaskAdapter
-
-    private lateinit var maxId: LiveData<Int>
+    var maxId by Delegates.notNull<Int>()
     lateinit var dateCalendar: Calendar
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,11 +47,7 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         val recycler = binding.recyclerView
         adapter = SubTaskAdapter()
         recycler.adapter = adapter
-
-        taskViewModel.readAllData.observe(viewLifecycleOwner, Observer { task ->
-            adapter?.setData(task)
-            maxId = taskViewModel.maxID()
-        })
+        //Executors.newSingleThreadExecutor()
         recycler.layoutManager = LinearLayoutManager(requireContext())
 
         return binding.root
@@ -63,11 +66,8 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private fun initialListener() {
 
         binding.addButtonSubTask.setOnClickListener {
-            val id = maxId.value
-            val newSubTask = Task(0, "", "", Date(0), false, false, id)
-            //val newSubTask = maxId.value?.let { parent_id -> Task(0, "", "", Date(0), false, false, parent_id) }
+            val newSubTask = Task(0, "", "", Date(0), false, false, 0)
             adapter.addSubTask(newSubTask)
-
         }
 
         binding.backButton.setOnClickListener {
@@ -109,6 +109,15 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             null
         )
         taskViewModel.addTask(newTask)
+        CoroutineScope(Main).launch {
+            maxId = taskViewModel.findOne(newTask.title, newTask.description)
+            for (subTask in adapter.getAllSubTasks()) {
+                val newSubTask = subTask.copy(parent_id = maxId)
+                taskViewModel.addTask(newSubTask)
+            }
+        }
+
+
         findNavController().navigate(R.id.action_addTaskFragment_to_mainFragment)
     }
 

@@ -1,15 +1,21 @@
 package com.example.fakegoogletasks.adapter
 
+import android.annotation.SuppressLint
+import android.icu.util.Calendar
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fakegoogletasks.databinding.ItemLayoutSubtaskBinding
 import com.example.fakegoogletasks.entity.Task
+import com.example.fakegoogletasks.utils.CustomTextWatcher
 import com.example.fakegoogletasks.utils.formatterCustom
 import java.util.*
 
-class SubTaskAdapter: RecyclerView.Adapter<SubTaskAdapter.SubTaskViewHolder>() {
+class SubTaskAdapter : RecyclerView.Adapter<SubTaskAdapter.SubTaskViewHolder>() {
 
     private var subTasks: MutableList<Task> = mutableListOf()
 
@@ -19,36 +25,43 @@ class SubTaskAdapter: RecyclerView.Adapter<SubTaskAdapter.SubTaskViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubTaskViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemLayoutSubtaskBinding.inflate(inflater, parent, false)
-
         return SubTaskViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SubTaskViewHolder, position: Int) {
         val currentItem = subTasks[position]
-        holder.binding.dateTextView.isVisible = true
-        val temp = formatterCustom(currentItem.date.time)
 
-//        holder.binding.checkBoxDelete.setOnClickListener {
-//            newTask = currentItem.copy(isFinish = holder.binding.checkBoxDelete.isChecked)
-//            taskActionListener.onDeleteButton(newTask)
-//        }
-//        holder.binding.checkBoxFavorite.setOnClickListener {
-//            newTask = currentItem.copy(isFavorite = holder.binding.checkBoxFavorite.isChecked)
-//            taskActionListener.onFavoriteButton(newTask)
-//        }
         with(holder.binding) {
-            //if (currentItem.title.isNotEmpty())
-                titleTextView.setText(currentItem.title)
-            //if (currentItem.description.isNotEmpty())
-                descriptionTextView.setText(currentItem.description)
-
-            //descriptionTextView.isVisible = !descriptionTextView.isVisible
+            titleTextView.setText(currentItem.title)
+            descriptionTextView.setText(currentItem.description)
             checkBoxFavorite.isChecked = currentItem.isFavorite
-            if (currentItem.date == Date(0))
-                dateTextView.text = ""
-            else
-                dateTextView.text = temp
-            //dateTextView.isVisible = !dateTextView.isVisible
+
+            checkBoxFavorite.setOnClickListener {
+                subTasks[position].isFavorite = !subTasks[position].isFavorite
+            }
+
+            //region TextWatcher
+
+            titleTextView.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    subTasks[position].title = holder.binding.titleTextView.text.toString()
+                }
+
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+            descriptionTextView.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                    subTasks[position].description =
+                        holder.binding.descriptionTextView.text.toString()
+                }
+
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+
+            //endregion
+
         }
     }
 
@@ -56,16 +69,28 @@ class SubTaskAdapter: RecyclerView.Adapter<SubTaskAdapter.SubTaskViewHolder>() {
         return subTasks.size
     }
 
-    fun setData(_subTasks: List<Task>) {
-        subTasks = _subTasks as MutableList<Task>
 
+    //region Function
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(_subTasks: List<Task>) {
+        if (_subTasks.isNotEmpty())
+            subTasks = _subTasks as MutableList<Task>
+        Log.d("Tag", "I am here1 + ${_subTasks.toString()}")
+        Log.d("Tag", "I am here2 + ${subTasks.toString()}")
         notifyDataSetChanged()
+    }
+
+    fun getAllSubTasks(): MutableList<Task> {
+        return subTasks
     }
 
     fun addSubTask(subTask: Task) {
         subTasks.add(subTask)
-        notifyDataSetChanged()
-        //notifyItemChanged()
+        //notifyDataSetChanged()
+        notifyItemChanged(subTasks.size)
     }
+
+    //endregion
 
 }

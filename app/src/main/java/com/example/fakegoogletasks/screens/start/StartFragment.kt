@@ -16,11 +16,16 @@ import com.example.fakegoogletasks.adapter.TaskAdapter
 import com.example.fakegoogletasks.databinding.FragmentStartBinding
 import com.example.fakegoogletasks.entity.Task
 import com.example.fakegoogletasks.viewmodels.TaskViewModel
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 
 class StartFragment : Fragment() {
 
-    private lateinit var viewModel: TaskViewModel
+    lateinit var viewModel: TaskViewModel
     lateinit var binding: FragmentStartBinding
 
     override fun onCreateView(
@@ -49,6 +54,9 @@ class StartFragment : Fragment() {
                     viewModel.updateTask(task)
                 }
 
+                override fun findById(id: Int): List<Task> {return emptyList()}
+
+
             }, it)
         }
         val recyclerView = binding.recyclerView
@@ -56,19 +64,16 @@ class StartFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-        viewModel.readAllData.observe(viewLifecycleOwner, Observer { task ->
-            adapter?.setData(task)
-        })
 
+        CoroutineScope(Main).launch {
+            viewModel.readAllData.observe(viewLifecycleOwner, Observer { task ->
+                adapter?.setData(task)
+            })
+
+        }
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-
-    }
 
 
     companion object {

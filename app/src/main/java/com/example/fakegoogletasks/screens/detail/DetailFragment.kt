@@ -3,6 +3,7 @@ package com.example.fakegoogletasks.screens.detail
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,12 +12,18 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fakegoogletasks.R
+import com.example.fakegoogletasks.adapter.SubTaskAdapter
 import com.example.fakegoogletasks.databinding.FragmentDetailBinding
 import com.example.fakegoogletasks.entity.Task
 import com.example.fakegoogletasks.screens.start.StartFragment.Companion.KEY_TO_TASK
 import com.example.fakegoogletasks.utils.formatterCustom
 import com.example.fakegoogletasks.viewmodels.TaskViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -26,8 +33,10 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var viewModel: TaskViewModel
     private lateinit var binding: FragmentDetailBinding
     lateinit var newTask: Task
+    lateinit var adapter: SubTaskAdapter
     lateinit var task: Task
     lateinit var dateCalendar: Calendar
+    var temp = emptyList<Task>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +45,18 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[TaskViewModel::class.java]
         dateCalendar = Calendar.getInstance()
+        task = arguments?.getSerializable(KEY_TO_TASK) as Task
+
+        CoroutineScope(Main).launch {
+            temp = viewModel.findChildrenById(task.id)
+            Log.d("Tag", temp.toString())
+            adapter = SubTaskAdapter()
+            adapter.setData(temp)
+            val recyclerView = binding.recyclerView
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        }
 
         return binding.root
     }
@@ -54,8 +75,12 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             findNavController().navigate(R.id.action_detailFragment_to_mainFragment)
         }
 
-        task = arguments?.getSerializable(KEY_TO_TASK) as Task
-
+        binding.addButton.setOnClickListener{
+            val newSubTask = Task(0, "", "", Date(0), false, false, task.id)
+            adapter.addSubTask(newSubTask)
+            Log.d("Tag", "All Subtask ${adapter.getAllSubTasks()}")
+            Log.d("Tag", "Count ${adapter.getAllSubTasks().size}")
+        }
         binding.titleEditText.setText(task.title)
         binding.descriptionEditText.setText(task.description)
 
@@ -75,6 +100,29 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.trashButton.setOnClickListener {
             deleteTask(task)
         }
+    }
+
+    //endregion
+
+
+    //region UpdateTask
+
+    private fun updateTask() {
+
+        newTask = Task(task.id,
+            binding.titleEditText.text.toString(),
+            binding.descriptionEditText.text.toString(),
+            dateCalendar.time,
+            task.isFinish,
+            binding.favoriteCheckBox.isChecked,
+            null
+        )
+        viewModel.updateTask(newTask)
+        var tempSubTasks = adapter.getAllSubTasks()
+        for (subTask in tempSubTasks) {
+            viewModel.addTask(subTask)
+        }
+        findNavController().navigate(R.id.action_detailFragment_to_mainFragment)
     }
 
     //endregion
@@ -128,22 +176,5 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     //endregion
 
-    //region UpdateTask
-
-    private fun updateTask() {
-
-        newTask = Task(task.id,
-            binding.titleEditText.text.toString(),
-            binding.descriptionEditText.text.toString(),
-            dateCalendar.time,
-            task.isFinish,
-            binding.favoriteCheckBox.isChecked,
-            null
-        )
-        viewModel.updateTask(newTask)
-        findNavController().navigate(R.id.action_detailFragment_to_mainFragment)
-    }
-
-    //endregion
 
 }

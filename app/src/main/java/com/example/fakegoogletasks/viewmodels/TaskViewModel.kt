@@ -7,13 +7,18 @@ import androidx.lifecycle.viewModelScope
 import com.example.fakegoogletasks.database.TaskDatabase
 import com.example.fakegoogletasks.database.repository.TaskRepository
 import com.example.fakegoogletasks.entity.Task
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class TaskViewModel(application: Application): AndroidViewModel(application) {
+class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     val readAllData: LiveData<List<Task>>
     private val repository: TaskRepository
+
+    //lateinit var maxId: LiveData<Int?>
+    lateinit var currentTask: LiveData<Int>
 
     init {
         val taskDao = TaskDatabase.getDatabase(
@@ -26,12 +31,14 @@ class TaskViewModel(application: Application): AndroidViewModel(application) {
     fun addTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addTask(task)
+            //repository.findOne(task.title, task.description)
         }
     }
 
     fun updateTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateTask(task)
+
         }
     }
 
@@ -47,8 +54,18 @@ class TaskViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun maxID(): LiveData<Int> {
-        return repository.maxId()
+    suspend fun findOne(title: String, description: String): Int {
+        val temp: Deferred<Int> = viewModelScope.async {
+            repository.findOne(title, description)
+        }
+        return temp.await()
+    }
+
+    suspend fun findChildrenById(id: Int): List<Task> {
+        val temp: Deferred<List<Task>> = viewModelScope.async {
+            repository.findChildrenById(id)
+        }
+        return temp.await()
     }
 
 }

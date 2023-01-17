@@ -86,4 +86,16 @@
         android:id="@+id/editButton"
         android:text="Сохранить"
         style="@style/ButtonAddDetail" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addButton"
+        android:text="Добавить задачу"
+        style="@style/ButtonAddDetail" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>
