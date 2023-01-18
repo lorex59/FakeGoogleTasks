@@ -110,7 +110,8 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         )
         taskViewModel.addTask(newTask)
         CoroutineScope(Main).launch {
-            maxId = taskViewModel.findOne(newTask.title, newTask.description)
+
+            maxId = taskViewModel.findMaxId() + 1
             for (subTask in adapter.getAllSubTasks()) {
                 val newSubTask = subTask.copy(parent_id = maxId)
                 taskViewModel.addTask(newSubTask)

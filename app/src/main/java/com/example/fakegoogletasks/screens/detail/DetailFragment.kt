@@ -112,7 +112,11 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         newTask = Task(task.id,
             binding.titleEditText.text.toString(),
             binding.descriptionEditText.text.toString(),
-            dateCalendar.time,
+
+            if (binding.timeEditText.toString() == "")
+                dateCalendar.time
+            else
+                Date(0),
             task.isFinish,
             binding.favoriteCheckBox.isChecked,
             null

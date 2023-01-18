@@ -34,11 +34,6 @@ class SubTaskAdapter : RecyclerView.Adapter<SubTaskAdapter.SubTaskViewHolder>() 
         with(holder.binding) {
             titleTextView.setText(currentItem.title)
             descriptionTextView.setText(currentItem.description)
-            checkBoxFavorite.isChecked = currentItem.isFavorite
-
-            checkBoxFavorite.setOnClickListener {
-                subTasks[position].isFavorite = !subTasks[position].isFavorite
-            }
 
             //region TextWatcher
 

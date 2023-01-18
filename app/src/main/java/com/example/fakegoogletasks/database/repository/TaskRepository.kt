@@ -32,4 +32,7 @@ class TaskRepository(private val taskDao: TaskDao) {
         return taskDao.findChildrenById(id)
     }
 
+    suspend fun findMaxId(): Int {
+        return taskDao.findMaxId()
+    }
 }

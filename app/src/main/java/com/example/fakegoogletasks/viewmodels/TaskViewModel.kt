@@ -17,7 +17,6 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     val readAllData: LiveData<List<Task>>
     private val repository: TaskRepository
 
-    //lateinit var maxId: LiveData<Int?>
     lateinit var currentTask: LiveData<Int>
 
     init {
@@ -31,7 +30,6 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun addTask(task: Task) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.addTask(task)
-            //repository.findOne(task.title, task.description)
         }
     }
 
@@ -57,6 +55,13 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun findOne(title: String, description: String): Int {
         val temp: Deferred<Int> = viewModelScope.async {
             repository.findOne(title, description)
+        }
+        return temp.await()
+    }
+
+    suspend fun findMaxId(): Int {
+        val temp: Deferred<Int> = viewModelScope.async {
+            repository.findMaxId()
         }
         return temp.await()
     }

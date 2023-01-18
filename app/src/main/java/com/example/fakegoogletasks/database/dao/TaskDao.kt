@@ -30,4 +30,7 @@ interface TaskDao {
     @Query("SELECT * FROM task_table WHERE parent_id = :id")
     suspend fun findChildrenById(id: Int): List<Task>
 
+    @Query("SELECT MAX(id) FROM task_table")
+    suspend fun findMaxId(): Int
+
 }
