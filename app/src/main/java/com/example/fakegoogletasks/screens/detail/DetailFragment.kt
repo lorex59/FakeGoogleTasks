@@ -44,9 +44,9 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     ): View? {
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[TaskViewModel::class.java]
-        dateCalendar = Calendar.getInstance()
         task = arguments?.getSerializable(KEY_TO_TASK) as Task
-
+        dateCalendar = Calendar.getInstance()
+        dateCalendar.time = task.date
         CoroutineScope(Main).launch {
             temp = viewModel.findChildrenById(task.id)
             Log.d("Tag", temp.toString())
@@ -75,7 +75,7 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             findNavController().navigate(R.id.action_detailFragment_to_mainFragment)
         }
 
-        binding.addButton.setOnClickListener{
+        binding.addButton.setOnClickListener {
             val newSubTask = Task(0, "", "", Date(0), false, false, task.id)
             adapter.addSubTask(newSubTask)
             Log.d("Tag", "All Subtask ${adapter.getAllSubTasks()}")
@@ -109,11 +109,12 @@ class DetailFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private fun updateTask() {
 
-        newTask = Task(task.id,
+        newTask = Task(
+            task.id,
             binding.titleEditText.text.toString(),
             binding.descriptionEditText.text.toString(),
 
-            if (binding.timeEditText.toString() == "")
+            if (binding.timeEditText.toString() != "")
                 dateCalendar.time
             else
                 Date(0),
