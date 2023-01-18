@@ -53,6 +53,8 @@
         tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashFragment_to_mainFragment"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
             app:destination="@id/mainFragment" />
     </fragment>
 </navigation>
