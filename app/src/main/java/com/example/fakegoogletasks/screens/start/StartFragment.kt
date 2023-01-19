@@ -54,9 +54,6 @@ class StartFragment : Fragment() {
                     viewModel.updateTask(task)
                 }
 
-                override fun findById(id: Int): List<Task> {return emptyList()}
-
-
             }, it)
         }
         val recyclerView = binding.recyclerView

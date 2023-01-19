@@ -27,7 +27,6 @@ interface TaskActionListener {
 
     fun onFavoriteButton(task: Task)
 
-    fun findById(id: Int): List<Task>
 }
 
 
@@ -55,6 +54,7 @@ class TaskAdapter(private val taskActionListener: TaskActionListener, private va
         val currentItem = taskList[position]
         with(holder.binding) {
             holder.binding.dateTextView.isVisible = true
+            holder.binding.descriptionTextView.isVisible = true
             val temp = formatterCustom(currentItem.date.time)
             holder.binding.root.setOnClickListener {
                 taskActionListener.onTaskDetail(currentItem)
